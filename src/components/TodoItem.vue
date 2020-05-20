@@ -19,11 +19,13 @@
         v-focus
       />
     </div>
+    <!-- end todo-item-left -->
     <div>
       <button @click="pluralize">Plural</button>
       <span class="remove-item" @click="removeTodo(todo.id)">&times;</span>
     </div>
   </div>
+  <!-- end todo-item -->
 </template>
 
 <script>
@@ -56,11 +58,6 @@ export default {
   },
   watch: {
     checkAll() {
-      // if (this.checkAll) {
-      //   this.completed = true
-      // } else {
-      //   this.completed = this.todo.completed
-      // }
       this.completed = this.checkAll ? true : this.todo.completed;
     }
   },
@@ -73,7 +70,7 @@ export default {
   },
   methods: {
     removeTodo(id) {
-      eventBus.$emit("removedTodo", id);
+      this.$store.dispatch("deleteTodo", id);
     },
     editTodo() {
       this.beforeEditCache = this.title;
@@ -84,7 +81,7 @@ export default {
         this.title = this.beforeEditCache;
       }
       this.editing = false;
-      eventBus.$emit("finishedEdit", {
+      this.$store.dispatch("updateTodo", {
         id: this.id,
         title: this.title,
         completed: this.completed,
@@ -100,7 +97,7 @@ export default {
     },
     handlePluralize() {
       this.title = this.title + "s";
-      eventBus.$emit("finishedEdit", {
+      this.$store.dispatch("updateTodo", {
         id: this.id,
         title: this.title,
         completed: this.completed,
