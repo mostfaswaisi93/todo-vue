@@ -1,94 +1,85 @@
 <template>
   <div>
-    <input
-      type="text"
-      class="todo-input"
-      placeholder="What needs to be done"
-      v-model="newTodo"
-      @keyup.enter="addTodo"
-    />
-    <transition-group
-      name="fade"
-      enter-active-class="animated fadeInUp"
-      leave-active-class="animated fadeOutDown"
-    >
-      <todo-item
-        v-for="todo in todosFiltered"
-        :key="todo.id"
-        :todo="todo"
-        :checkAll="!anyRemaining"
-      ></todo-item>
+    <div class="name-container">
+      Welcome, {{ name }}
+    </div>
+    <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
+    <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
+    <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining">
+    </todo-item>
     </transition-group>
 
     <div class="extra-container">
       <todo-check-all></todo-check-all>
       <todo-items-remaining></todo-items-remaining>
-    </div>
-    <!-- end extra-container -->
+    </div> <!-- end extra-container -->
 
     <div class="extra-container">
       <todo-filtered></todo-filtered>
 
       <div>
         <transition name="fade">
-          <todo-clear-completed></todo-clear-completed>
+        <todo-clear-completed></todo-clear-completed>
         </transition>
       </div>
-    </div>
-    <!-- end extra-container -->
+    </div> <!-- end extra-container -->
   </div>
 </template>
 
 <script>
-import TodoItem from "./TodoItem";
-import TodoItemsRemaining from "./TodoItemsRemaining";
-import TodoCheckAll from "./TodoCheckAll";
-import TodoFiltered from "./TodoFiltered";
-import TodoClearCompleted from "./TodoClearCompleted";
+import TodoItem from './TodoItem'
+import TodoItemsRemaining from './TodoItemsRemaining'
+import TodoCheckAll from './TodoCheckAll'
+import TodoFiltered from './TodoFiltered'
+import TodoClearCompleted from './TodoClearCompleted'
 export default {
-  name: "todo-list",
+  name: 'todo-list',
   components: {
     TodoItem,
     TodoItemsRemaining,
     TodoCheckAll,
     TodoFiltered,
-    TodoClearCompleted
+    TodoClearCompleted,
   },
   data() {
     return {
-      newTodo: "",
-      idForTodo: 3
-    };
+      newTodo: '',
+      idForTodo: 3,
+      name: '',
+    }
   },
   created() {
-    this.$store.dispatch("retrieveTodos");
+    this.$store.dispatch('retrieveTodos')
+    this.$store.dispatch('retrieveName')
+      .then(response => {
+        this.name = response.data.name
+      })
   },
   computed: {
     anyRemaining() {
-      return this.$store.getters.anyRemaining;
+      return this.$store.getters.anyRemaining
     },
     todosFiltered() {
-      return this.$store.getters.todosFiltered;
+      return this.$store.getters.todosFiltered
     }
   },
   methods: {
     addTodo() {
       if (this.newTodo.trim().length == 0) {
-        return;
+        return
       }
-      this.$store.dispatch("addTodo", {
+      this.$store.dispatch('addTodo', {
         id: this.idForTodo,
-        title: this.newTodo
-      });
-      this.newTodo = "";
-      this.idForTodo++;
-    }
+        title: this.newTodo,
+      })
+      this.newTodo = ''
+      this.idForTodo++
+    },
   }
-};
+}
 </script>
 
 <style lang="scss">
-@import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css");
 .todo-input {
   width: 100%;
   padding: 10px 18px;
@@ -145,6 +136,9 @@ export default {
   border-top: 1px solid lightgrey;
   padding-top: 14px;
   margin-bottom: 14px;
+}
+.name-container {
+  margin-bottom: 16px;
 }
 button {
   font-size: 14px;

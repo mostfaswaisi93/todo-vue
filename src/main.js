@@ -7,11 +7,22 @@ import Master from './components/layouts/Master'
 import {
     store
 } from './store/store'
+import * as VeeValidate from 'vee-validate';
+import CxltToastr from 'cxlt-vue2-toastr'
+
+const toastrConfigs = {
+    position: 'bottom right',
+    showDuration: 2000,
+    timeOut: 5000,
+    progressBar: true,
+}
 
 window.eventBus = new Vue()
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
+Vue.use(VeeValidate)
+Vue.use(CxltToastr, toastrConfigs)
 
 const router = new VueRouter({
     routes,
