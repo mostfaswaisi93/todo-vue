@@ -46,6 +46,7 @@ export default {
       id: this.todo.id,
       title: this.todo.title,
       completed: this.todo.completed,
+      timestamp: this.todo.timestamp,
       editing: this.todo.editing,
       beforeEditCache: ""
     };
@@ -85,6 +86,7 @@ export default {
         id: this.id,
         title: this.title,
         completed: this.completed,
+        timestamp: this.timestamp,
         editing: this.editing
       });
     },
@@ -101,6 +103,7 @@ export default {
         id: this.id,
         title: this.title,
         completed: this.completed,
+        timestamp: this.timestamp,
         editing: this.editing
       });
     }
